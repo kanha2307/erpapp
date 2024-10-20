@@ -24,14 +24,15 @@ const userSchema = mongoose.Schema({
     enum: ["admin", "user", "shopOwner"],
     default: "user",
   },
+  hasPaid: { 
+    type: Boolean, 
+    default: false 
+  },
   isActive: { 
     type: Boolean,
     default: true 
   }, // To enable/disable shop owners
-  createdAt: { 
-    type: Date, 
-    default: Date.now 
- },
+  
   avatar: { 
     type: String,
     default:'/uploads/default.png'
@@ -42,6 +43,7 @@ const userSchema = mongoose.Schema({
         ref: "Product" 
     }
  ],
+ subscriptionStatus: { type: Boolean, default: false },
  createdAt: { 
     type: Date, 
     default: Date.now()

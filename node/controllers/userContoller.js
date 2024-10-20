@@ -8,7 +8,7 @@ const register = async (req, res) => {
     const { name, email, phone, password, role } = req.body;
     const existingUser = await UserModel.findOne({ email });
     if (existingUser) {
-      res.status(400).json({ error: "User Already Exist" });
+      return res.status(400).json({ error: "User Already Exist" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const avatarUrl = req.file

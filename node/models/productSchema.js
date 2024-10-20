@@ -38,7 +38,7 @@ const productSchema = mongoose.Schema({
         },
         coordinates:{
             type:[Number],
-            require:true
+            required:true
         }
     },
     createdAt: { 

@@ -18,4 +18,4 @@ app.use("/api",userRoute)
 app.use("/product",productRoute)
 app.use("/admin",adminRoute)
 
-app.listen(3000)
+app.listen(3000) 

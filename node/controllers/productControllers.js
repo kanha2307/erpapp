@@ -2,12 +2,15 @@ const ProductModel = require("../models/productSchema.js");
 
 const createProducts = async (req, res) => {
   try {
-    const { name, description, price, category, stock, coordinates } = req.body;
+    const { name, description, price, category, stock, longitude,latitude } = req.body;
     if(!req.file){
       return res.status(400).json({message:'Image file is required'})
     }
 
-    const imageUrl = `/uploads/${req.file.filename}`
+    const imageUrl = req.file
+      ? `/uploads/${req.file.filename}`
+      : "/uploads/default-avatar.png";
+    coordinates = [ parseFloat(latitude),parseFloat(longitude)];
     const newProduct = await ProductModel.create({
       name,
       description,
@@ -40,6 +43,9 @@ const getProductsByRadius = async (req, res) => {
                 }
             }
         })
+        if(!products){
+          return res.status(400).json({message:'No Product found'})
+        }
         res.status(200).json(products)
     } catch (error) {
         return res.status(500).json({message:error.message})
@@ -54,4 +60,18 @@ const getProductsByOwner = async (req, res) => {
     }
 };
 
-module.exports = { getProductsByRadius, createProducts, getProductsByOwner };
+const deleteProducts = async (req,res)=>{
+    try {
+      const {id} = req.query
+      const product = await ProductModel.findByIdAndDelete(id)
+      if(!product){
+        return res.status(400).json({message:'No Product found'})
+      }
+      res.status(200).json({message:'Product deleted successfuly'})
+
+    } catch (error) {
+      res.status(500).json({message:error.message})
+    }
+}
+
+module.exports = { getProductsByRadius, createProducts, getProductsByOwner,deleteProducts };

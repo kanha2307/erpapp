@@ -1,6 +1,7 @@
 const UserModel = require("../models/userSchema.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { sendSMS } = require("../utils/twilio.js");
 require("dotenv").config();
 
 const register = async (req, res) => {
@@ -22,6 +23,9 @@ const register = async (req, res) => {
       password: hashedPassword,
       role: role || "user",
     });
+
+    const message = `Welcome ${name} your account has been created`
+    await sendSMS(phone,message)
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
@@ -83,6 +87,9 @@ const login = async (req, res) => {
         expiresIn: "1h",
       }
     );
+
+    const message = `Welcome ${user.name} your account has been created`
+    await sendSMS(phone,message)
 
     res.status(201).json({
       token,

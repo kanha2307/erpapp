@@ -71,7 +71,7 @@ const update = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await UserModel.findOne({ email });
+    const user = await UserModel.findOne({email});
     if (!user) {
       return res.status(400).json({ error: "User doesn't exist" });
     }
@@ -88,8 +88,8 @@ const login = async (req, res) => {
       }
     );
 
-    const message = `Welcome ${user.name} your account has been created`
-    await sendSMS(phone,message)
+    // const message = `Welcome ${user.name} your account has been created`
+    // await sendSMS(phone,message)
 
     res.status(201).json({
       token,

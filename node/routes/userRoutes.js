@@ -7,6 +7,6 @@ const router = express.Router()
 router.post("/register",uploadAvatar.single('avatar'),register)
 router.put("/update",authenticate,uploadAvatar.single('avatar'),update)
 router.post("/login",login)
-router.get("/getuser",authenticate,getUserDetails)
+router.get("/getuser",getUserDetails)
 
 module.exports = router 

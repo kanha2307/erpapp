@@ -2,13 +2,18 @@ import React, { useState } from 'react';
 import { Input } from 'antd';
 import { AntDesignOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 import Nav from '../components/Nav';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginFailure, loginSuccess } from '../redux/userSlice';
 
 const Login = () => {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const error = useSelector((state) => state.user.error);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,32 +28,38 @@ const Login = () => {
         body: JSON.stringify({ email, password }),
       });
 
-      // Check if the response is not OK (e.g., status code 400)
+      
       if (!response.ok) {
-        const errorData = await response.json(); // Get the error response data
-        setError(errorData.error || 'Login failed. Please try again.');
+        const errorData = await response.json(); 
+        console.log(response)
+        dispatch(loginFailure(errorData.error))
         return; // Stop further execution
       }
 
       const data = await response.json();
-      console.log(data); // Handle successful login
-      setSuccess('Login successful!'); // You can set success message or navigate to another page
+      
+      if (data?.user) {
+        dispatch(loginSuccess(data.user));
+        navigate('/verify');
+      } else {
+        dispatch(loginFailure('Invalid response from server'));
+      }
     } catch (error) {
-      setError('Network error. Please check your connection.');
-      console.error(error);
+      dispatch(loginFailure(error.message))
+      console.log(error);
     }
   };
 
   return (
     <div className='h-screen relative w-full flex flex-col justify-center items-center p-4'>
       <Nav />
-      <div className='w-full md:w-[25%] font-[Urbanthin] flex flex-col gap-4 rounded-md bg-slate-100 p-4 md:p-10'>
+      <div className='w-full md:w-[25%] font-[Urbanthin] flex flex-col gap-4  rounded-md bg-slate-100 p-4 md:p-10'>
         <h1 className='text-3xl font-[Urban] mb-2 text-center'>Login</h1>
         <form onSubmit={handleSubmit} className='flex flex-col '>
           <Input
             onChange={(e) => setEmail(e.target.value)}
             value={email}
-            className='mb-4'
+            className='mb-2'
             size="large"
             placeholder="Enter your Email"
             type='text'
@@ -57,15 +68,13 @@ const Login = () => {
           <Input
             onChange={(e) => setPassword(e.target.value)}
             value={password}
-            className='mb-1'
+            className='mb-4'
             size="large"
             placeholder="Enter your Password"
             type='password'
             prefix={<LockOutlined />}
           />
-          <p className='mb-4 text-end text-sm text-gray-700 font-normal'>
-            <NavLink to='/forgotpassword'>Forgot Password</NavLink>
-          </p>
+          
           <button className='w-full rounded-md px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white' type="submit">
             Submit
           </button>
@@ -74,7 +83,6 @@ const Login = () => {
           Don't have an account, <NavLink className='text-blue-500' to="/register">Create One</NavLink>
         </p>
         {error && <p className='text-red-500 text-center'>{error}</p>}
-        {success && <p className='text-green-500 text-center'>{success}</p>}
       </div>
     </div>
   );

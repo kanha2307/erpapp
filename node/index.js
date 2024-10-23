@@ -6,8 +6,9 @@ const adminRoute = require('./routes/adminRoutes.js')
 const path = require('path')
 const app = express()
 connectDB()
-const cors = require('cors');
 require("dotenv").config()
+
+const cors = require('cors');
 app.use(express.json())
 app.use(cors({
     origin: 'http://localhost:3000', 

@@ -13,6 +13,7 @@ const OTPverify = () => {
   const [canResend, setCanResend] = useState(false);
   const [error, setError] = useState()
   const phone = useSelector((state) => state.user?.user.phone);
+  const role = useSelector((state) => state.user?.user.role);
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -66,8 +67,10 @@ const OTPverify = () => {
 
     const data = await response.json();
     dispatch(otpSuccess())
-    if(data?.user?.user.role){
-      navigate(`/${data?.user?.user.role}`)
+    console.log(role)
+    
+    if(role){
+      navigate(`/${role}`)
     }
     
     

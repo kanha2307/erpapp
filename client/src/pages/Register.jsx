@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Input, Select, message } from 'antd';
-import { AntDesignOutlined, EyeInvisibleOutlined, EyeOutlined, LockOutlined, MessageOutlined, PlusOutlined, LoadingOutlined, UserOutlined } from '@ant-design/icons';
+import { AntDesignOutlined, EyeInvisibleOutlined, EyeOutlined, LockOutlined, MessageOutlined, UserOutlined } from '@ant-design/icons';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../redux/userSlice';
@@ -8,11 +8,12 @@ import { loginSuccess } from '../redux/userSlice';
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
   const [role, setRole] = useState('user');
   const [countryCode, setCountryCode] = useState('+91');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -25,7 +26,15 @@ const Register = () => {
   const handlePhoneChange = (e) => {
     setPhoneNumber(e.target.value);
   };
-  
+
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
   const handleChangeRole = (value) => {
     setRole(value);
   };
@@ -34,24 +43,30 @@ const Register = () => {
     e.preventDefault();
     const fullPhoneNumber = `${countryCode}${phoneNumber}`; // Concatenate country code with phone number
 
-    const formData = new FormData();
-    formData.append('name', e.target[0].value); // Assuming name is in the first input
-    formData.append('email', e.target[1].value); // Assuming email is in the second input
-    formData.append('phone', fullPhoneNumber); // Append formatted phone number
-    formData.append('password', password);
-    formData.append('role', role);
+    const userData = {
+      name,
+      email,
+      phone: fullPhoneNumber,
+      password,
+      role,
+    };
 
     try {
-      const response = await fetch('YOUR_API_ENDPOINT_HERE', {
+      const response = await fetch('http://localhost:8000/api/register', {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData), // Send JSON data
       });
 
       const data = await response.json();
       if (response.ok) {
         // Dispatch success action to Redux store
         dispatch(loginSuccess(data.user));
-        navigate('/otpverify'); // Navigate to the desired path
+        console.log(data.user);
+        
+        navigate('/verify'); // Navigate to the desired path
       } else {
         message.error(data.error);
       }
@@ -66,8 +81,24 @@ const Register = () => {
       <div className='w-full md:w-[25%] flex flex-col gap-4 rounded-md bg-slate-100 p-4 md:p-10'>
         <h1 className='text-3xl mb-2 text-center'>Register your Account</h1>
         <form onSubmit={handleSubmit} className='flex flex-col'>
-          <Input className='mb-4' size="large" placeholder="Enter your Name" type='text' prefix={<UserOutlined />} />
-          <Input className='mb-4' size="large" placeholder="Enter your Email" type='text' prefix={<MessageOutlined />} />
+          <Input
+            className='mb-4'
+            size="large"
+            placeholder="Enter your Name"
+            type='text'
+            prefix={<UserOutlined />}
+            value={name}
+            onChange={handleNameChange} // Update name state
+          />
+          <Input
+            className='mb-4'
+            size="large"
+            placeholder="Enter your Email"
+            type='text'
+            prefix={<MessageOutlined />}
+            value={email}
+            onChange={handleEmailChange} // Update email state
+          />
 
           <Input
             size='large'

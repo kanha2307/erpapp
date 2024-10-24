@@ -9,6 +9,8 @@ require("dotenv").config();
 const register = async (req, res) => {
   try {
     const { name, email, phone, password, role } = req.body;
+    console.log(name, email, phone, password, role);
+    
     const phoneNumber = phonevalidation(phone)
     const existingUser = await UserModel.findOne({ email });
     if (existingUser) {

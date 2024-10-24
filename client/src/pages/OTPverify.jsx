@@ -5,6 +5,7 @@ import { Input } from "antd";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { otpFailure, otpSuccess } from "../redux/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const OTPverify = () => {
   const [Otp, setOtp] = useState("");
@@ -13,6 +14,9 @@ const OTPverify = () => {
   const [error, setError] = useState()
   const phone = useSelector((state) => state.user?.user.phone);
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  
 
 
   useEffect(() => {
@@ -43,7 +47,7 @@ const OTPverify = () => {
   const handleOtp = async (e) => {
     e.preventDefault();
 
-    const res = await fetch(`http://localhost:8000/api/verifyotp`, {
+    const response = await fetch(`http://localhost:8000/api/verifyotp`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -60,7 +64,7 @@ const OTPverify = () => {
     }
 
 
-    const data = await res.json();
+    const data = await response.json();
     dispatch(otpSuccess())
     if(data?.user?.user.role){
       navigate(`/${data?.user?.user.role}`)

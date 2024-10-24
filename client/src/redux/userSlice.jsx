@@ -4,7 +4,7 @@ const initialState = {
     user:null,
     isLoggedIn:false,
     error:null,
-    // token:null
+    token:null
 }
 
 const userSlice = createSlice({
@@ -13,12 +13,11 @@ const userSlice = createSlice({
     reducers:{
         loginSuccess : (state,action)=>{
             state.user  = action.payload
+            
             state.isLoggedIn = false
             state.error = null
         },
-        // setToken : (state,action)=>{
-        //    state.token = action.payload
-        // },
+        
         otpSuccess : (state)=>{
            
             state.isLoggedIn = true

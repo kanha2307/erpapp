@@ -15,14 +15,12 @@ const register = async (req, res) => {
       return res.status(400).json({ error: "User Already Exist" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const avatarUrl = req.file
-      ? `/uploads/avatars/${req.file.filename}`
-      : "/uploads/default-avatar.png";
+    
     const user = await UserModel.create({
       name,
       email,
       phone: phoneNumber,
-      avatar: avatarUrl,
+      
       password: hashedPassword,
       role: role || "user",
     });
@@ -41,7 +39,7 @@ const register = async (req, res) => {
       user: {
         id: user._id,
         name: user.name,
-        avatar: user.avatar,
+       
         email: user.email,
         phone: user.phone,
         role: user.role,
@@ -58,10 +56,7 @@ const update = async (req, res) => {
     const phoneNumber = phonevalidation(phone)
     const user = await UserModel.findById(req.user.id);
 
-    if (req.file) {
-      user.avatar = `/uploads/avatar/${req.file.filename}`;
-    }
-
+   
     if (name) user.name = name;
     if (phone) user.phone = phoneNumber;
 
@@ -105,7 +100,7 @@ const login = async (req, res) => {
         email: user.email,
         phone: phoneNumber,
         role: user.role,
-        avatar: user.avatar,
+        
       },
     });
   } catch (error) {

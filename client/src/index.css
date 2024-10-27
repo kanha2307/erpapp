@@ -10,3 +10,6 @@
     font-family: 'Urbanthin';
     src: url('./assets/font/Urbanist-Regular.ttf');
 }
+* {
+    font-family: 'Urbanthin', sans-serif !important;
+}

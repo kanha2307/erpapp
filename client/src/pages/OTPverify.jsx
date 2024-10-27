@@ -21,7 +21,7 @@ const OTPverify = () => {
 
 
   useEffect(() => {
-    // Start the countdown
+   
     if (timer > 0) {
       const interval = setInterval(() => {
         setTimer((prev) => prev - 1);
@@ -29,7 +29,7 @@ const OTPverify = () => {
 
       return () => clearInterval(interval); 
     } else {
-      setCanResend(true); // Enable resend button when timer reaches zero
+      setCanResend(true); 
     }
   }, [timer]);
 
@@ -61,13 +61,13 @@ const OTPverify = () => {
       const errorData = await response.json(); 
       console.log(response)
       dispatch(otpFailure(errorData.error))
-      return; // Stop further execution
+      return; 
     }
 
 
     const data = await response.json();
     dispatch(otpSuccess())
-    console.log(role)
+    console.log("role",role)
     
     if(role){
       navigate(`/${role}`)

@@ -39,8 +39,8 @@ const Login = () => {
       const data = await response.json();
 
       
-      if (data?.user) {
-        dispatch(loginSuccess(data.user));////////////////////////////////////////////////////////
+      if (data.user) {
+        dispatch(loginSuccess(data.user));
         navigate('/verify');
       } else {
         dispatch(loginFailure('Invalid response from server'));

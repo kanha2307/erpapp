@@ -10,7 +10,9 @@ import { toggleMenu } from "../redux/menuSlice";
 import { IoCloseSharp } from "react-icons/io5";
 import { IoMenu } from "react-icons/io5";
 
-const SideMenu = ({role,name}) => {
+const SideMenu = ({role,name,screenSize}) => {
+  
+
  
   const isOpen = useSelector((state)=>state.menu?.isOpen)
   const dispatch = useDispatch()
@@ -39,8 +41,8 @@ const shopOwnerMenu = [
   const menu = role==='admin' ? adminMenu : role === 'shopOwner' ? shopOwnerMenu : userMenu
   return (
     
-    <div className={`w-1/5 h-screen flex flex-col  p-5 bg-[#FFFFFF] ${isOpen ? "w-1/5" : "hidden"}  `}>
-      <div className="text-2xl flex items-center gap-2 font-bold mb-6">
+    <div className={`w-1/5 z-20  h-screen flex  flex-col transition-all ease-in duration-500  p-5 bg-[#FFFFFF] ${isOpen ? "block" : "hidden"} ${screenSize<900 ? "w-full absolute" : "w-1/5"} `}>
+      <div className="text-2xl flex items-center justify-end gap-2 font-bold mb-6">
         <span className="flex items-center gap-2">
           <img className="" src={logo} />
         <h1 className="text-2xl">Dashboard</h1>

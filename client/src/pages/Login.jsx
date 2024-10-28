@@ -31,7 +31,6 @@ const Login = () => {
       
       if (!response.ok) {
         const errorData = await response.json(); 
-        console.log(response)
         dispatch(loginFailure(errorData.error))
         return; // Stop further execution
       }
@@ -48,7 +47,6 @@ const Login = () => {
       }
     } catch (error) {
       dispatch(loginFailure(error.message))
-      console.log(error);
     }
   };
 

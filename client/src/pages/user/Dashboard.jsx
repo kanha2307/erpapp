@@ -7,18 +7,39 @@ import ProductCard from "../../components/ProductCard";
 import SideMenu from "../../components/SideMenu";
 import { IoCloseSharp, IoMenu } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleMenu } from "../../redux/menuSlice";
+import { closeMenu, openMenu, toggleMenu } from "../../redux/menuSlice";
 
 const { Header, Sider, Content } = Layout;
 
 const ShopDashboard = () => {
+
   const dispatch = useDispatch()
   const isOpen = useSelector((state)=>state.menu.isOpen)
   const user = JSON.parse(localStorage.getItem('user'));
   const [products, setProducts] = useState([]); // Initializing with an empty array
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true); // Add loading state
-  console.log("local user",user)
+  const [screenSize, setscreenSize] = useState()
+
+  useEffect(() => {
+    const handleResize = ()=>setscreenSize(window.innerWidth)
+    window.addEventListener('resize',handleResize)
+    handleResize()
+    return()=> window.removeEventListener('resize',handleResize)
+
+
+
+  }, [])
+  useEffect(()=>{
+    if(screenSize<=900){
+      dispatch(closeMenu())
+
+    }
+    else{
+      dispatch(openMenu())
+    }
+
+  },[screenSize])
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -44,15 +65,15 @@ const ShopDashboard = () => {
   );
 
   return (
-    <div className="flex h-screen bg-[#F4F4F4] ">
-    <SideMenu role={user.role} name={user.name}/>
-
-    <main className="flex-1 p-6">
-      <div className="flex justify-between items-center mb-4">
-      <button onClick={() => dispatch(toggleMenu())}>
-          {isOpen?  <IoMenu/> : <IoCloseSharp/> }
+    <div className="flex  items-start relative z-10 h-screen bg-[#F4F4F4] ">
+    <SideMenu role={user.role} name={user.name} screenSize={screenSize}/>
+    <button className=" mt-6 ml-4 absolute z-40 " onClick={() => dispatch(toggleMenu())}>
+          {isOpen?  < IoCloseSharp className="text-xl md:text-3xl"/> : <IoMenu className="text-xl md:text-3xl"/> }
         </button>
-        <h1 className="text-xl font-normal">Hello {user.name}👋🏼</h1>
+    <main className="flex-1  p-6">
+      <div className="flex justify-between items-center mb-4">
+      
+        <h1 className=" text-md md:text-xl font-normal ml-10">Hello {user.name}👋🏼</h1>
         <Input.Search
           placeholder="Search products..."
           value={searchTerm}
@@ -61,7 +82,7 @@ const ShopDashboard = () => {
         />
       </div>
       
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className={`grid grid-cols-2  ${isOpen ? "md:grid-cols-4" : "md:grid-cols-5" }`}>
         {filteredProducts.map((product) => (
           <ProductCard product={product}/>
         ))}

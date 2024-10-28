@@ -20,6 +20,6 @@
     src: url('./assets/font/NATS-Regular.ttf');
 }
 *{
-    font-family: 'pop';
+    font-family: 'pop' ;
     font-weight: 100;
   }

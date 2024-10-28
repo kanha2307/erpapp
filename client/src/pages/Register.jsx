@@ -64,7 +64,7 @@ const Register = () => {
       if (response.ok) {
         // Dispatch success action to Redux store
         dispatch(loginSuccess(data.user));
-        console.log(data.user);
+  
         
         navigate('/verify'); // Navigate to the desired path
       } else {

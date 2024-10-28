@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Input } from 'antd';
-import { AntDesignOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
+import { AntDesignOutlined, EyeInvisibleOutlined, EyeOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 import Nav from '../components/Nav';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -41,6 +41,7 @@ const Login = () => {
       
       if (data.user) {
         dispatch(loginSuccess(data.user));
+        
         navigate('/verify');
       } else {
         dispatch(loginFailure('Invalid response from server'));
@@ -66,7 +67,7 @@ const Login = () => {
             type='text'
             prefix={<UserOutlined />}
           />
-          <Input
+          <Input.Password
             onChange={(e) => setPassword(e.target.value)}
             value={password}
             className='mb-4'
@@ -74,6 +75,7 @@ const Login = () => {
             placeholder="Enter your Password"
             type='password'
             prefix={<LockOutlined />}
+            iconRender={visible => (visible ? <EyeOutlined /> : <EyeInvisibleOutlined />)}
           />
           
           <button className='w-full rounded-md px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white' type="submit">

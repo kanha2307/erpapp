@@ -13,9 +13,12 @@ const OTPverify = () => {
   const [canResend, setCanResend] = useState(false);
   const [error, setError] = useState()
   const phone = useSelector((state) => state.user?.user.phone);
+  const user = useSelector((state) => state.user.user);
+  
   const role = useSelector((state) => state.user?.user.role);
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  console.log("user",user)
 
   
 
@@ -59,15 +62,17 @@ const OTPverify = () => {
 
     if (!response.ok) {
       const errorData = await response.json(); 
-      console.log(response)
+      // console.log(response)
       dispatch(otpFailure(errorData.error))
       return; 
     }
 
 
     const data = await response.json();
+    
     dispatch(otpSuccess())
-    console.log("role",role)
+    
+    localStorage.setItem('user',JSON.stringify(user))
     
     if(role){
       navigate(`/${role}`)

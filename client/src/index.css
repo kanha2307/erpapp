@@ -2,14 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @font-face {
-    font-family: 'Urban';
-    src: url('./assets/font/Urbanist-Bold.ttf');
+    font-family: 'popb';
+    src: url('./assets/font/Poppins-SemiBold.ttf');
 }
 @font-face {
-    font-family: 'Urbanthin';
+    font-family: 'pop';
+    src: url('./assets/font/Poppins-Medium.ttf');
+}
+@font-face {
+    font-family: 'u';
     src: url('./assets/font/Urbanist-Regular.ttf');
 }
-* {
-    font-family: 'Urbanthin', sans-serif !important;
+@font-face {
+    font-family: 'nats';
+    src: url('./assets/font/NATS-Regular.ttf');
 }
+*{
+    font-family: 'pop';
+    font-weight: 100;
+  }

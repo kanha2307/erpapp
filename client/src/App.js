@@ -2,10 +2,10 @@ import React from 'react'
 import {BrowserRouter,Routes,Route} from 'react-router-dom'
 import Login from './pages/Login'
 import Register from './pages/Register'
-import Dashboard from './pages/Dashboard'
+import Dashboard from './pages/user/Dashboard'
 
-import AdminDashboard from './pages/AdminDashboard'
-import ShopDashboard from './pages/ShopDashboard'
+import AdminDashboard from './pages/admin/AdminDashboard'
+import ShopDashboard from './pages/shop/ShopDashboard'
 import OTPverify from './pages/OTPverify'
 import ProtectedRoutes from './components/ProtectedRoutes'
 

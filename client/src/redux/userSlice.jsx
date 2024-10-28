@@ -16,12 +16,14 @@ const userSlice = createSlice({
             
             state.isLoggedIn = false
             state.error = null
+            
         },
         
         otpSuccess : (state)=>{
-           
+         
             state.isLoggedIn = true
             state.error = null
+           
         },
         otpFailure: (state, action) => {
             state.user = null; 

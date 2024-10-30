@@ -18,7 +18,12 @@ const userSlice = createSlice({
             state.error = null
             
         },
-        
+        setToken: (state,action)=>{
+            state.token  = action.payload
+        },
+        removeToken: (state,action)=>{
+            state.token  = null
+        },
         otpSuccess : (state)=>{
          
             state.isLoggedIn = true
@@ -26,7 +31,8 @@ const userSlice = createSlice({
            
         },
         otpFailure: (state, action) => {
-            state.user = null; 
+            state.user = null;
+            state.token = null 
             state.isLoggedIn = false;
             state.error = action.payload; 
         },
@@ -42,5 +48,5 @@ const userSlice = createSlice({
         }
     }
 })
-export const { loginSuccess,logoutSuccess,loginFailure,otpSuccess,otpFailure} = userSlice.actions
+export const { loginSuccess,logoutSuccess,loginFailure,otpSuccess,otpFailure,setToken,removeToken} = userSlice.actions
 export default userSlice.reducer

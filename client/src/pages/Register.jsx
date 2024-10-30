@@ -3,7 +3,7 @@ import { Button, Input, Select, message } from 'antd';
 import { AntDesignOutlined, EyeInvisibleOutlined, EyeOutlined, LockOutlined, MessageOutlined, UserOutlined } from '@ant-design/icons';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { loginSuccess } from '../redux/userSlice';
+import { loginSuccess, setToken } from '../redux/userSlice';
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -14,6 +14,7 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const uri = process.env.REACT_APP_URL;
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -52,7 +53,7 @@ const Register = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:8000/api/register', {
+      const response = await fetch(`${uri}/api/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -61,12 +62,11 @@ const Register = () => {
       });
 
       const data = await response.json();
-      if (response.ok) {
+      if (response.ok){
         // Dispatch success action to Redux store
-        dispatch(loginSuccess(data.user));
-  
-        
-        navigate('/verify'); // Navigate to the desired path
+        dispatch(loginSuccess(data.user))
+        dispatch(setToken(data.token))
+        navigate('/verify'); //Navigate to the desired path
       } else {
         message.error(data.error);
       }

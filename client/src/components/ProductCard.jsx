@@ -2,7 +2,7 @@ import React from "react";
 import { Card, Typography, Image, Badge, Space, Dropdown } from "antd";
 import { EnvironmentOutlined } from "@ant-design/icons";
 import { FiShoppingCart } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const { Meta } = Card;
 const { Text, Title } = Typography;
@@ -19,6 +19,10 @@ const items = [
 const ProductCard = ({ product }) => {
 
   const uri = process.env.REACT_APP_URL;
+  const navigate = useNavigate();
+  const handleCardClick = () => {
+    navigate(`/product/${product._id}`);
+  };
 
   return (
     // <Card
@@ -72,7 +76,7 @@ const ProductCard = ({ product }) => {
     //     <Badge.Ribbon text="Out of Stock" color="red" placement="end" style={{ fontSize: "14px" }} />
     //   )}
     // </Card>
-    <div className="w-[167px] md:w-64 z-10 hover:shadow-lg cursor-pointer p-3 rounded-xl flex flex-col justify-between   bg-white">
+    <div onClick={handleCardClick} className="w-[167px] md:w-64 z-10 hover:shadow-lg cursor-pointer p-3 rounded-xl flex flex-col justify-between   bg-white">
       <img
         className=" h-28 md:h-32 object-cover  rounded-2xl"
         src={`${uri}${product.image}` || "/path-to-placeholder.jpg"}

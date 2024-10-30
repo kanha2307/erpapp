@@ -20,6 +20,11 @@ const ShopDashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true); // Add loading state
   const [screenSize, setscreenSize] = useState()
+  const uri = process.env.REACT_APP_URL;
+  
+    
+  
+
 
   useEffect(() => {
     const handleResize = ()=>setscreenSize(window.innerWidth)
@@ -44,7 +49,7 @@ const ShopDashboard = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/product/getall");
+        const response = await axios.get(`${uri}/product/getall`);
         
         const data = response.data
 

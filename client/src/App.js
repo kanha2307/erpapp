@@ -8,6 +8,7 @@ import AdminDashboard from './pages/admin/AdminDashboard'
 import ShopDashboard from './pages/shop/ShopDashboard'
 import OTPverify from './pages/OTPverify'
 import ProtectedRoutes from './components/ProtectedRoutes'
+import ProductDetail from './components/ProductDetail'
 
 const App = () => {
   return (
@@ -35,6 +36,15 @@ const App = () => {
             <AdminDashboard/>
           // </ProtectedRoutes>
         }/>
+
+        <Route 
+            path="/product/:productId" 
+            element={
+              // <ProtectedRoutes>
+                <ProductDetail />
+              // </ProtectedRoutes>
+            }
+          />
       </Routes>
       
     </BrowserRouter> 

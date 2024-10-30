@@ -4,7 +4,7 @@ import Nav from "../components/Nav";
 import { Input } from "antd";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { otpFailure, otpSuccess } from "../redux/userSlice";
+import { otpFailure, otpSuccess, removeToken } from "../redux/userSlice";
 import { useNavigate } from "react-router-dom";
 
 const OTPverify = () => {
@@ -14,8 +14,9 @@ const OTPverify = () => {
   const [error, setError] = useState()
   const phone = useSelector((state) => state.user?.user.phone);
   const user = useSelector((state) => state.user.user);
-  
+  const uri = process.env.REACT_APP_URL;
   const role = useSelector((state) => state.user?.user.role);
+  const token = useSelector((state) => state.user?.token);
   const dispatch = useDispatch()
   const navigate = useNavigate()
   console.log("user",user)
@@ -38,7 +39,7 @@ const OTPverify = () => {
 
   const handleResend =async (e)=>{
     e.preventDefault();
-    const res = await fetch(`http://localhost:8000/api/resendotp`, {
+    const res = await fetch(`${uri}/api/resendotp`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -51,7 +52,7 @@ const OTPverify = () => {
   const handleOtp = async (e) => {
     e.preventDefault();
 
-    const response = await fetch(`http://localhost:8000/api/verifyotp`, {
+    const response = await fetch(`${uri}/api/verifyotp`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -64,6 +65,7 @@ const OTPverify = () => {
       const errorData = await response.json(); 
       // console.log(response)
       dispatch(otpFailure(errorData.error))
+      dispatch(removeToken())
       return; 
     }
 
@@ -73,6 +75,8 @@ const OTPverify = () => {
     dispatch(otpSuccess())
     
     localStorage.setItem('user',JSON.stringify(user))
+    localStorage.setItem('token',JSON.stringify(token))
+
     
     if(role){
       navigate(`/${role}`)

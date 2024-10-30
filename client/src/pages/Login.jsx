@@ -4,10 +4,10 @@ import { AntDesignOutlined, EyeInvisibleOutlined, EyeOutlined, LockOutlined, Use
 import Nav from '../components/Nav';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginFailure, loginSuccess } from '../redux/userSlice';
+import { loginFailure, loginSuccess, setToken } from '../redux/userSlice';
 
 const Login = () => {
-
+  const uri = process.env.REACT_APP_URL;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch()
@@ -19,7 +19,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:8000/api/login', {
+      const response = await fetch(`${uri}/api/login`, {
         method: 'post',
         headers: {
           'Accept': 'application/json',
@@ -40,6 +40,7 @@ const Login = () => {
       
       if (data.user) {
         dispatch(loginSuccess(data.user));
+        dispatch(setToken(data.token))
         
         navigate('/verify');
       } else {

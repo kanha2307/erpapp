@@ -67,9 +67,7 @@ const ShopDashboard = () => {
   return (
     <div className="flex  items-start relative z-10 h-screen bg-[#F4F4F4] ">
     <SideMenu role={user.role} name={user.name} screenSize={screenSize}/>
-    <button className=" mt-6 ml-4 absolute z-40 " onClick={() => dispatch(toggleMenu())}>
-          {isOpen?  < IoCloseSharp className="text-xl md:text-3xl"/> : <IoMenu className="text-xl md:text-3xl"/> }
-        </button>
+    
     <main className="flex-1  p-6">
       <div className="flex justify-between items-center mb-4">
       

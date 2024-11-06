@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
 import Nav from "../components/Nav";
-
-import { Input } from "antd";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { otpFailure, otpSuccess, removeToken } from "../redux/userSlice";
@@ -9,35 +7,31 @@ import { useNavigate } from "react-router-dom";
 
 const OTPverify = () => {
   const [Otp, setOtp] = useState("");
-  const [timer, setTimer] = useState(30); // Set initial countdown (e.g., 30 seconds)
+  const [timer, setTimer] = useState(30);
   const [canResend, setCanResend] = useState(false);
-  const [error, setError] = useState()
+  const [error, setError] = useState();
   const phone = useSelector((state) => state.user?.user.phone);
   const user = useSelector((state) => state.user.user);
   const uri = process.env.REACT_APP_URL;
   const role = useSelector((state) => state.user?.user.role);
   const token = useSelector((state) => state.user?.token);
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  console.log("user",user)
-
-  
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  console.log("user", user);
 
   useEffect(() => {
-   
     if (timer > 0) {
       const interval = setInterval(() => {
         setTimer((prev) => prev - 1);
       }, 1000);
 
-      return () => clearInterval(interval); 
+      return () => clearInterval(interval);
     } else {
-      setCanResend(true); 
+      setCanResend(true);
     }
   }, [timer]);
 
-  const handleResend =async (e)=>{
+  const handleResend = async (e) => {
     e.preventDefault();
     const res = await fetch(`${uri}/api/resendotp`, {
       method: "POST",
@@ -45,10 +39,9 @@ const OTPverify = () => {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ phone}),
+      body: JSON.stringify({ phone }),
     });
-    
-  }
+  };
   const handleOtp = async (e) => {
     e.preventDefault();
 
@@ -58,33 +51,28 @@ const OTPverify = () => {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ phone, otp:Otp }),
+      body: JSON.stringify({ phone, otp: Otp }),
     });
 
     if (!response.ok) {
-      const errorData = await response.json(); 
+      const errorData = await response.json();
       // console.log(response)
-      dispatch(otpFailure(errorData.error))
-      dispatch(removeToken())
-      return; 
+      dispatch(otpFailure(errorData.error));
+      dispatch(removeToken());
+      return;
     }
-
 
     const data = await response.json();
-    
-    dispatch(otpSuccess())
-    
-    localStorage.setItem('user',JSON.stringify(user))
-    localStorage.setItem('token',JSON.stringify(token))
 
-    
-    if(role){
-      navigate(`/${role}`)
+    dispatch(otpSuccess());
+
+    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("token", JSON.stringify(token));
+
+    if (role) {
+      navigate(`/${role}`);
     }
-    
-    
 
-    
     console.log("OTP verification response:", data);
   };
 
@@ -98,9 +86,10 @@ const OTPverify = () => {
           Enter the OTP send to your mobile number
         </p>
         <form onSubmit={handleOtp} className="flex flex-col ">
-          <input 
+          <input
+            className="px-3 py-2 "
             value={Otp}
-            onChange={(e)=>setOtp(e.target.value)}
+            onChange={(e) => setOtp(e.target.value)}
             type="text"
           />
           <button
@@ -110,14 +99,17 @@ const OTPverify = () => {
             Submit
           </button>
         </form>
-        <button 
-        onClick={handleResend}
-        disabled ={ !canResend}
-        className={`text-end text-md mt-2 text-blue-700 mb-3 font-normal${canResend ? "" : "opacity-50 cursor-not-allowed"}`}>
-           {canResend ? "Resend OTP" : `Resend OTP in ${timer}s`}
+        <button
+          onClick={handleResend}
+          disabled={!canResend}
+          className={`text-end text-md mt-2 text-blue-700 mb-3 font-normal${
+            canResend ? "" : "opacity-50 cursor-not-allowed"
+          }`}
+        >
+          {canResend ? "Resend OTP" : `Resend OTP in ${timer}s`}
         </button>
 
-        {error && <p className='text-red-500 text-center'>{error}</p>}
+        {error && <p className="text-red-500 text-center">{error}</p>}
       </div>
     </div>
   );

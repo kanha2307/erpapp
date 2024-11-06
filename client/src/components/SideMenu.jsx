@@ -40,12 +40,12 @@ const shopOwnerMenu = [
 
   const menu = role==='admin' ? adminMenu : role === 'shopOwner' ? shopOwnerMenu : userMenu
   return (
-    <div className={` transition-all ease-in-out duration-200 z-50 ${isOpen ? 'w-1/5' : 'w-0'} ${screenSize<900 ? "w-full absolute" : "w-1/5"}`}>
+    <div className={` transition-all ease-in-out duration-200 z-50 ${isOpen ? 'w-1/5' : 'w-0'} ${screenSize<900 && "w-full absolute "}`}>
       <button className=" mt-6 ml-4 absolute z-40 " onClick={() => dispatch(toggleMenu())}>
           {isOpen?  < IoCloseSharp className="text-xl md:text-3xl"/> : <IoMenu className="text-xl md:text-3xl"/> }
         </button>
     
-    <div className={` z-20  h-screen flex  flex-col transition-all ease-in duration-500  p-5 bg-[#FFFFFF] ${isOpen ? "w-full" : "hidden"}  `}>
+    <div className={` z-20  h-screen flex  flex-col p-5 bg-[#FFFFFF] ${isOpen ? "w-full" : "hidden"}  `}>
       
       <div className="text-2xl flex items-center justify-end gap-2 font-bold mb-6">
         <span className="flex items-center gap-2">

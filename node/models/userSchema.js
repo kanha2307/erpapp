@@ -39,7 +39,8 @@ const userSchema = mongoose.Schema({
   savedProducts: [
     { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: "Product" 
+        ref: "Product" ,
+        default: [],
     }
  ],
  subscriptionStatus: { type: Boolean, default: false },

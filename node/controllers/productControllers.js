@@ -1,4 +1,5 @@
 const ProductModel = require("../models/productSchema.js");
+const UserModel = require("../models/userSchema.js")
 
 const createProducts = async (req, res) => {
   try {
@@ -99,4 +100,61 @@ const getProductsById = async (req,res)=>{
   }
 }
 
-module.exports = { getProductsByRadius, createProducts, getProductsByOwner,deleteProducts,getAllProducts ,getProductsById};
+
+const addProductToCart = async (req, res) => {
+  try {
+    const { id, productId } = req.body;
+    console.log("User ID:", id, "Product ID:", productId);
+
+    const user = await UserModel.findById(id);
+
+    if (!user) {
+      return res.status(400).json({ error: "User not found" });
+    }
+
+    // Ensure savedProducts is initialized as an array if it's undefined
+    if (!Array.isArray(user.savedProducts)) {
+      user.savedProducts = [];
+    }
+
+    // Check if product is already in savedProducts
+    if (productId && !user.savedProducts.includes(productId)) {
+      user.savedProducts.push(productId);
+    }
+
+    await user.save();
+    res.status(200).json({ message: "Product added to cart successfully", savedProducts: user.savedProducts });
+  } catch (error) {
+    console.error("Error in addProductToCart:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+const removeProductFromCart = async (req, res) => {
+  try {
+    const { id, productId } = req.body;
+   
+
+    const user = await UserModel.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    if (productId) {
+      user.savedProducts = user.savedProducts.filter(item => item.toString() !== productId);
+    }
+
+    await user.save();
+
+    res.status(200).json({ message: "Product removed from cart successfully", savedProducts: user.savedProducts });
+  } catch (error) {
+    console.error("Error removing product from cart:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+
+module.exports = { getProductsByRadius, createProducts, getProductsByOwner,deleteProducts,getAllProducts ,getProductsById,addProductToCart,removeProductFromCart};

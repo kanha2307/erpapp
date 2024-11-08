@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import SideMenu from "./SideMenu";
 import { useDispatch } from "react-redux";
 import { closeMenu } from "../redux/menuSlice";
+import { message, Space } from "antd";
 
 const ProductDetail = () => {
   const { productId } = useParams();
@@ -14,6 +15,8 @@ const ProductDetail = () => {
   const [address, setAddress] = useState("");
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
+  
+  
   // const API_KEY = process.env.GOOGLE_MAPS_API_KEY;
 
   // Function to fetch the real address from latitude and longitude
@@ -39,6 +42,7 @@ const ProductDetail = () => {
   // };
 
   dispatch(closeMenu());
+  
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -61,6 +65,7 @@ const ProductDetail = () => {
         const data = await response.json();
         setProduct(data);
 
+
         // if (data.location) {
         //   const { coordinates } = data.location;
         //   const [longitude, latitude] = coordinates;
@@ -78,12 +83,30 @@ const ProductDetail = () => {
     fetchProduct();
   }, [productId, uri, token]);
 
+  const addtoCart = async ()=>{
+    const user = JSON.parse(localStorage.getItem("user"))
+    const response = await fetch(`${uri}/product/addtocart`,{
+      method:'POST',
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id:user.id,productId }),
+    })
+    const data =await response.json()
+    console.log(data)
+    console.log("prod",productId)
+    console.log("useid",user.id)
+    message.success('Product added to Cart');
+
+  }
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
   if (!product) return <p>No product data available.</p>;
 
   return (
-    <div className="w-full  h-screen flex  bg-[#F4F4F4] ">
+    <div className="w-full  min-h-screen flex gap-0 md:gap-10  bg-[#F4F4F4] ">
       <SideMenu />
 
       <div className="max-w-screen-lg mx-auto  bg-white shadow-lg   rounded-none md:rounded-3xl px-12 md:px-16 py-8  md:m-8 flex flex-col md:flex-row items-center gap-4 md:gap-16">
@@ -145,9 +168,12 @@ const ProductDetail = () => {
           </div>
 
           <div className="flex justify-between items-center mt-4 gap-4">
-            <button className="px-6 py-3 w-full bg-[#FFBF00] text-white rounded-lg hover:bg-yellow-600 transition duration-200 ease-in-out">
-              Add to Cart
+           
+
+            <button onClick={addtoCart} className="px-6 py-3 w-full bg-[#FFBF00] text-white rounded-lg hover:bg-yellow-600 transition duration-200 ease-in-out">
+               Cart
             </button>
+        
             <button className="px-6 py-3 w-full bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-200 ease-in-out">
               Buy Now
             </button>

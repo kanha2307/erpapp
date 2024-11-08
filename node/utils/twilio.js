@@ -13,7 +13,6 @@ const sendSMS = async(to ,message)=>{
     
     const otp = generateOTP()
     otps[to] = otp
-    console.log(otps);
     
     try {
         const resposnse = await client.messages.create({
@@ -31,10 +30,7 @@ const verifyOTP = async (req,res)=>{
     const {phone,otp}  = req.body
     
     
-    console.log(`Verifying OTP for phone: ${phone} and otp ${otp}`); // Log phone and received OTP
     const storedOtp = otps[phone];
-    console.log(`Stored OTP for ${phone}: ${storedOtp}`);
-    
     if(!storedOtp){
         return res.status(400).json({message:'No Otp generated from this user'})
     }

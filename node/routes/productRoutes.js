@@ -6,8 +6,8 @@ const router = express.Router()
 
 router.post('/search',getProductsByRadius)
 router.get('/getall',getAllProducts)
-router.get('/productbyowner',authenticate,getProductsByOwner)
-router.get('/productbyid/:id',authenticate,getProductsById)
+router.get('/productbyowner',getProductsByOwner)
+router.get('/productbyid/:id',getProductsById)
 
 router.post('/create',authenticate,isShopOWner,upload.single('image'),createProducts)
 router.delete('/delete',authenticate,isShopOWner,deleteProducts)

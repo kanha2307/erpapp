@@ -17,7 +17,7 @@ const OTPverify = () => {
   const token = useSelector((state) => state.user?.token);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log("user", user);
+  
 
   useEffect(() => {
     if (timer > 0) {

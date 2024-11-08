@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import logo from "../assets/images/setting 1.png";
 import { TbUserSquareRounded, TbSquareKey } from "react-icons/tb";
@@ -6,16 +6,37 @@ import { TiShoppingBag } from "react-icons/ti";
 import { AiOutlineSetting, AiOutlineSisternode } from "react-icons/ai";
 import { IoIosArrowForward, } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleMenu } from "../redux/menuSlice";
+import { closeMenu, openMenu, toggleMenu } from "../redux/menuSlice";
 import { IoCloseSharp } from "react-icons/io5";
 import { IoMenu } from "react-icons/io5";
 
-const SideMenu = ({role,name,screenSize}) => {
+const SideMenu = () => {
   
 
  
   const isOpen = useSelector((state)=>state.menu?.isOpen)
   const dispatch = useDispatch()
+  const [screenSize, setscreenSize] = useState()
+  const user = JSON.parse(localStorage.getItem('user'));
+
+  
+  useEffect(() => {
+    const handleResize = ()=>setscreenSize(window.innerWidth)
+    window.addEventListener('resize',handleResize)
+    handleResize()
+    return()=> window.removeEventListener('resize',handleResize)
+  }, [])
+
+  useEffect(()=>{
+    if(screenSize<=900){
+      dispatch(closeMenu())
+
+    }
+    else{
+      dispatch(openMenu())
+    }
+
+  },[screenSize])
  
   const userMenu = [
     { icon: <TbSquareKey />, name: "Dashboard", dest: "/user" },
@@ -38,7 +59,7 @@ const shopOwnerMenu = [
     { icon: <TbUserSquareRounded />, name: "Customers", dest: "/shopOwner/customers" },
 ];
 
-  const menu = role==='admin' ? adminMenu : role === 'shopOwner' ? shopOwnerMenu : userMenu
+  const menu = user.role==='admin' ? adminMenu : user.role === 'shopOwner' ? shopOwnerMenu : userMenu
   return (
     <div className={` transition-all ease-in-out duration-200 z-50 ${isOpen ? 'w-1/5' : 'w-0'} ${screenSize<900 && "w-full absolute "}`}>
       <button className=" mt-6 ml-4 absolute z-40 " onClick={() => dispatch(toggleMenu())}>
@@ -89,10 +110,10 @@ const shopOwnerMenu = [
           </div>
           <div className="w-full flex items-center justify-between py-3 rounded-[20px] hover:bg-gray-200 ">
             <div className="flex items-center gap-5">
-              <div className="bg-[#4925E9] text-white rounded-full size-12 flex items-center justify-center  p-1"><h1 className="text-xl">{name[0].toUpperCase()}</h1></div>
+              <div className="bg-[#4925E9] text-white rounded-full size-12 flex items-center justify-center  p-1"><h1 className="text-xl">{user.name[0].toUpperCase()}</h1></div>
               <div className="text-lg leading-1">
-                <h1 className="text-md font-normal text-[#4a4949]">{name}</h1>
-                <h1 className="text-sm text-[#757575]">{role}</h1>
+                <h1 className="text-md font-normal text-[#4a4949]">{user.name}</h1>
+                <h1 className="text-sm text-[#757575]">{user.role}</h1>
               </div>
 
             </div>

@@ -89,7 +89,7 @@ const getAllProducts = async(req,res)=>{
 const getProductsById = async (req,res)=>{
   try {
     const {id} = req.params
-    const product = await ProductModel.findById(id)
+    const product = await ProductModel.findById(id).populate('owner', 'name email phone'); 
     if(!product){
       return res.status(400).json({message:'No Product found'})
     }

@@ -8,12 +8,12 @@ const items = [
   {
     key: '1',
     label: (
-      <Link to="/user/wishlist">
-        Add to wishlist
+      <Link to="/user/cart">
+        Add to Cart
       </Link>
     ),
   },]
-const ProductCard = ({ product }) => {
+const WishListCard = ({ product }) => {
 
   const uri = process.env.REACT_APP_URL;
   const navigate = useNavigate();
@@ -43,11 +43,17 @@ const ProductCard = ({ product }) => {
           <h1 className="text-[#404B52] text-[12px]">{product.category}</h1>
         </div>
       </div>
-      <div className="flex  mt-3 items-center justify-around">
-       
+      <div className="flex pl-4 mt-3 items-center justify-around">
+        <Dropdown menu={{items}} placement="bottomLeft">
+          <a onClick={(e) => e.preventDefault()}>
+            <Space>
+              <FiShoppingCart className="text-xl md:text-3xl pointer mr-5" />
+            </Space>
+          </a>
+        </Dropdown>
 
-        <button onClick={handleCardClick} className="p-2 md:p-4 w-full rounded-xl bg-[#FFBF00] hover:bg-yellow-600">
-          <h1 className="text-sm">Get Details</h1>
+        <button className="p-2 md:p-4 w-full rounded-full bg-[#FFBF00] hover:bg-yellow-600">
+          <h1 className="text-sm">Buy Now</h1>
         </button>
         </div>
       </div>
@@ -55,4 +61,4 @@ const ProductCard = ({ product }) => {
   );
 };
 
-export default ProductCard;
+export default WishListCard;

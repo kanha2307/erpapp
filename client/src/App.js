@@ -9,6 +9,9 @@ import ShopDashboard from './pages/shop/ShopDashboard'
 import OTPverify from './pages/OTPverify'
 import ProtectedRoutes from './components/ProtectedRoutes'
 import ProductDetail from './components/ProductDetail'
+import Cart from './pages/user/WishList'
+import Wishlist from './pages/user/WishList'
+import PaymentPage from './components/PaymentPage'
 
 const App = () => {
   return (
@@ -42,6 +45,22 @@ const App = () => {
             element={
               // <ProtectedRoutes>
                 <ProductDetail />
+              // </ProtectedRoutes>
+            }
+          />
+        <Route 
+            path="/user/wishlist" 
+            element={
+              // <ProtectedRoutes>
+                <Wishlist/>
+              // </ProtectedRoutes>
+            }
+          />
+        <Route 
+            path="/checkout" 
+            element={
+              // <ProtectedRoutes>
+                <PaymentPage/>
               // </ProtectedRoutes>
             }
           />

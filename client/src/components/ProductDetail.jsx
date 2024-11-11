@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SideMenu from "./SideMenu";
 import { useDispatch } from "react-redux";
 import { closeMenu } from "../redux/menuSlice";
@@ -15,6 +15,8 @@ const ProductDetail = () => {
   const [address, setAddress] = useState("");
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
+  const [check, setcheck] = useState(true)
+  const navigate = useNavigate()
   
   
   // const API_KEY = process.env.GOOGLE_MAPS_API_KEY;
@@ -81,7 +83,9 @@ const ProductDetail = () => {
     };
 
     fetchProduct();
-  }, [productId, uri, token]);
+  }, [productId, uri, token,check]);
+
+  
 
   const addtoCart = async ()=>{
     const user = JSON.parse(localStorage.getItem("user"))
@@ -97,9 +101,34 @@ const ProductDetail = () => {
     console.log(data)
     console.log("prod",productId)
     console.log("useid",user.id)
-    message.success('Product added to Cart');
+    message.success('Product added to Wish list');
+    setcheck(false)
 
   }
+  const removefromcart = async ()=>{
+    const user = JSON.parse(localStorage.getItem("user"))
+    const response = await fetch(`${uri}/product/removefromcart`,{
+      method:'POST',
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id:user.id,productId }),
+    })
+    const data =await response.json()
+    console.log(data)
+    
+
+      message.success('Product removed from Wish list');
+      setcheck(true)
+    
+
+  }
+
+  const handleBuyNow = () => {
+    navigate("/checkout", { state: { product } });
+  };
+
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -170,11 +199,11 @@ const ProductDetail = () => {
           <div className="flex justify-between items-center mt-4 gap-4">
            
 
-            <button onClick={addtoCart} className="px-6 py-3 w-full bg-[#FFBF00] text-white rounded-lg hover:bg-yellow-600 transition duration-200 ease-in-out">
-               Cart
+            <button onClick={check ? addtoCart : removefromcart} className="px-6 py-3 w-full bg-[#FFBF00] text-white rounded-lg hover:bg-yellow-600 transition duration-200 ease-in-out">
+              {check ? "add" : "remove "}
             </button>
         
-            <button className="px-6 py-3 w-full bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-200 ease-in-out">
+            <button onClick={handleBuyNow} className="px-6 py-3 w-full bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-200 ease-in-out">
               Buy Now
             </button>
           </div>

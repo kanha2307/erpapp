@@ -129,11 +129,28 @@ const resendOtp = async (req, res) => {
   res.status(200).json({ message: "Otp send" });
 };
 
+
+const getWishList = async (req,res)=>{
+  try {
+    const {userId} = req.params
+  const user = await UserModel.findById(userId).populate("savedProducts")
+
+  if (!user) {
+    return res.status(400).json({ error: "No user Found" });
+  }
+
+  res.status(200).json({cartItems:user.savedProducts})
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 module.exports = {
   register,
   login,
   getUserDetails,
   update,
   resendOtp,
+  getWishList
  
 };

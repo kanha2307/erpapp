@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.post('/search',getProductsByRadius)
 router.get('/getall',getAllProducts)
-router.get('/productbyowner',getProductsByOwner)
+router.get('/productbyowner/:id',getProductsByOwner)
 router.get('/productbyid/:id',getProductsById)
 router.post("/addtocart",addProductToCart)
 router.post("/removefromcart",removeProductFromCart)

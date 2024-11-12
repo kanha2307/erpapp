@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../assets/images/setting 1.png";
 import { TbUserSquareRounded, TbSquareKey } from "react-icons/tb";
 import { TiShoppingBag } from "react-icons/ti";
@@ -9,6 +9,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { closeMenu, openMenu, toggleMenu } from "../redux/menuSlice";
 import { IoCloseSharp } from "react-icons/io5";
 import { IoMenu } from "react-icons/io5";
+import { AiOutlineLogout } from "react-icons/ai";
+
+
+
 
 const SideMenu = () => {
   
@@ -18,6 +22,7 @@ const SideMenu = () => {
   const dispatch = useDispatch()
   const [screenSize, setscreenSize] = useState()
   const user = JSON.parse(localStorage.getItem('user'));
+  const navigate = useNavigate()
 
   
   useEffect(() => {
@@ -37,7 +42,13 @@ const SideMenu = () => {
     }
 
   },[screenSize])
- 
+
+  const handleLogout = ()=>{
+    localStorage.removeItem()
+    navigate('/')
+    
+  }
+  
   const userMenu = [
     { icon: <TbSquareKey />, name: "Dashboard", dest: "/user" },
     { icon: <TiShoppingBag />, name: "Wish List", dest: "/user/wishlist" },
@@ -113,7 +124,7 @@ const shopOwnerMenu = [
         </div>
         }
           
-          <div className="w-full flex items-center justify-between py-3 rounded-[20px] hover:bg-gray-200 ">
+          <div className="w-full flex items-center justify-between py-3 rounded-[20px]  ">
             <div className="flex items-center gap-5">
               <div className="bg-[#4925E9] text-white rounded-full size-12 flex items-center justify-center  p-1"><h1 className="text-xl">{user.name[0].toUpperCase()}</h1></div>
               <div className="text-lg leading-1">
@@ -122,9 +133,12 @@ const shopOwnerMenu = [
               </div>
 
             </div>
-            <IoIosArrowForward/>
+            <div onClick={handleLogout}>
+              <AiOutlineLogout className="text-2xl"/>
+            </div>
             
           </div>
+          
         </div>
       </div>
     </div>

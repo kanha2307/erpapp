@@ -5,13 +5,14 @@ import Register from './pages/Register'
 import Dashboard from './pages/user/Dashboard'
 
 import AdminDashboard from './pages/admin/AdminDashboard'
-import ShopDashboard from './pages/shop/ShopDashboard'
 import OTPverify from './pages/OTPverify'
 import ProtectedRoutes from './components/ProtectedRoutes'
 import ProductDetail from './components/ProductDetail'
 import Cart from './pages/user/WishList'
 import Wishlist from './pages/user/WishList'
 import PaymentPage from './components/PaymentPage'
+import MyProduct from './pages/shop/MyProduct'
+import ShopDashboard from './pages/shop/ShopDashboard'
 
 const App = () => {
   return (
@@ -56,11 +57,22 @@ const App = () => {
               // </ProtectedRoutes>
             }
           />
-        <Route 
+        {/* <Route 
             path="/checkout" 
             element={
               // <ProtectedRoutes>
                 <PaymentPage/>
+              // </ProtectedRoutes>
+            }
+          /> */}
+
+
+
+        <Route 
+            path="/shopOwner/products" 
+            element={
+              // <ProtectedRoutes>
+                <MyProduct/>
               // </ProtectedRoutes>
             }
           />

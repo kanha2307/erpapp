@@ -125,8 +125,9 @@ const ProductDetail = () => {
 
   }
 
-  const handleBuyNow = () => {
-    navigate("/checkout", { state: { product } });
+  const handleBuyNow = (e) => {
+    e.preventDefault()
+    // navigate("/checkout", { state: { product } });
   };
 
 

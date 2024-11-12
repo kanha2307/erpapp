@@ -1,3 +1,4 @@
+// models/Order.js
 const mongoose = require("mongoose");
 
 const OrderSchema = new mongoose.Schema({
@@ -9,7 +10,9 @@ const OrderSchema = new mongoose.Schema({
   address: { type: String, required: true },
   phone: { type: String, required: true },
   totalPrice: { type: Number, required: true },
-  status: { type: String, default: "Pending" },
+  razorpayOrderId: { type: String },
+  razorpayPaymentId: { type: String },
+  status: { type: String, default: "Pending" }, // "Pending", "Paid", or "Confirmed" for COD
   createdAt: { type: Date, default: Date.now },
 });
 

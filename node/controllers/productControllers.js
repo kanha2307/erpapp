@@ -53,8 +53,12 @@ const getProductsByRadius = async (req, res) => {
     }
 };
 const getProductsByOwner = async (req, res) => {
+  const {id} = req.params
     try {
-        const products = await  ProductModel.find({owner:req.user.id})
+        const user = await  UserModel.findById(id)
+        if(!user){
+          return res.status(400).json({message:'No user found'})
+        }
         res.status(200).json(products)
     } catch (error) {
         res.status(500).json({message:error.message})
@@ -64,7 +68,7 @@ const getProductsByOwner = async (req, res) => {
 const deleteProducts = async (req,res)=>{
     try {
       const {id} = req.query
-      const product = await ProductModel.findByIdAndDelete(id)
+      const product = await ProductModel.findByIdAndDelete(id).populate(prod)
       if(!product){
         return res.status(400).json({message:'No Product found'})
       }

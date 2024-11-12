@@ -6,7 +6,7 @@ import SideMenu from "../../components/SideMenu";
 import {  useSelector } from "react-redux";
 
 
-const ShopDashboard = () => {
+const Dashboard = () => {
 
   const isOpen = useSelector((state)=>state.menu.isOpen)
   const user = JSON.parse(localStorage.getItem('user'));
@@ -67,4 +67,4 @@ const ShopDashboard = () => {
   );
 };
 
-export default ShopDashboard;
+export default Dashboard;
